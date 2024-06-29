@@ -205,7 +205,9 @@
 
 # You can optionally have ceedling create environment variables for you before
 # performing the rest of its tasks.
-:environment: []
+:environment:
+  - :device: PIC32MX154F128B
+  - :dfp: PIC32MX_DFP/1.5.259/xc32
 
 # LIBRARIES
 # These libraries are automatically injected into the build process. Those specified as
@@ -330,6 +332,18 @@
 #   :pre_build:
 #   :post_build:
 #   :post_error:
+
+:mdb:
+  :device: "#{ENV['DEVICE']}"
+  :tools:
+    :sim:
+      :uart1io.uartioenabled: false
+      :uart2io.uartioenabled: true
+      :uart2io.output: window
+    :snap:
+      :programoptions.pgmspeed: Max
+  :breakpoints:
+    - uart_end
 
 ################################################################
 # TOOLCHAIN CONFIGURATION
