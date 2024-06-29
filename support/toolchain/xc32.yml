@@ -1,0 +1,35 @@
+---
+:tools:
+  :test_compiler:
+    :name: xc32_test_compiler
+    :executable: xc32-gcc
+    :arguments:
+      - -I"${5}"
+      - -D${6}
+      - -mprocessor=#{ENV['DEVICE'].sub(/^\D+/, "")}
+      - -mdfp=#{File.expand_path(File.join(ENV['DFP_PATH'], 'Microchip', ENV['DFP']))}
+      - -g
+      - -std=c99
+      - -Wall
+      - -Wextra
+      - -Werror
+      - -ffunction-sections
+      - -MMD
+      - -MF ${4}
+      - -Wa,-adhlmn=${3}
+      - -c
+      - -o ${2}
+      - ${1}
+  :test_linker:
+    :name: xc32_test_linker
+    :executable: xc32-gcc
+    :arguments:
+      - ${5}
+      - ${4}
+      - -mprocessor=#{ENV['DEVICE'].sub(/^\D+/, "")}
+      - -mdfp=#{File.expand_path(File.join(ENV['DFP_PATH'], 'Microchip', ENV['DFP']))}
+      - -Wl,--gc-sections
+      - -Wl,-Map=${3}
+      - -o ${2}
+      - ${1}
+...
